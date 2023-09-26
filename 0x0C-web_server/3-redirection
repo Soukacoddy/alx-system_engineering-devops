@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Install nginx, set up to listen to port 80 and change default page served to
-# "Hello World!"
+# "Holberton school"
 # Configure Nginx server so that /redirect_me is redirecting to another page
 
 sudo apt-get -y update
