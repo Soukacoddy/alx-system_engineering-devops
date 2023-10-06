@@ -1,23 +1,12 @@
 #!/usr/bin/env bash
-# Dsplays info about domain and subdomain.
+#Double the number of webservers
 
-records ()
-{
-record="$(dig ${2}.${1} | awk 'NR==14 { print $4 }')"
-
-IP="$(dig ${2}.${1} | awk 'NR==14 { print $5 }')"
-
-echo "The subdomain $2 is a $record record and points to $IP"
-}
-
-
-# Check number of arguments passed to script
-if [ "$#" -ne 2 ];
-then
-    records $1 "www"
-    records $1 "lb-01"
-    records $1 "web-01"
-    records $1 "web-02"
-else
-    records $1 $2
+if [ "$#" -eq 1 ]; then
+    echo "$(dig www.$1 | awk '/ANSWER SECTION:/ {getline; print "The subdomain www is a "$4" record and points to "$5}')"
+    echo "$(dig lb-01.$1 | awk '/ANSWER SECTION:/ {getline; print "The subdomain lb-01 is a "$4" record and points to "$5}')"
+    echo "$(dig web-01.$1 | awk '/ANSWER SECTION:/ {getline; print "The subdomain web-01 is a "$4" record and points to "$5}')"
+    echo "$(dig web-02.$1 | awk '/ANSWER SECTION:/ {getline; print "The subdomain web-02 is a "$4" record and points to "$5}')"
+elif [ "$#" -eq 2 ]; then
+    subdomain=$2
+    echo "$(dig $subdomain.$1 | awk '/ANSWER SECTION:/ {getline; print "The subdomain '"$subdomain"' is a "$4" record and points to "$5}')"
 fi
