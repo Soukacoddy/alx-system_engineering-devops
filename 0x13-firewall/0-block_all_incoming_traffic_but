@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
-# Configures an Ubuntu server with some requirements.
-cp /etc/hosts ~/hosts.new
-echo "127.0.0.2 localhost" >> ~/hosts.new
-echo "8.8.8.8   facebook.com" >> ~/hosts.new
-cp -f ~/hosts.new /etc/hosts
+# Configuring  a ufw firewall to block all incoming traffic except for TCP ports 22, 443 and 80.
+
+apt-get install ufw
+sed -i 's/IPV6=.*/IPV6=yes/' /etc/default/ufw
+ufw disable
+ufw enable
+ufw default deny incoming
+ufw default allow outgoing
+ufw allow 22/tcp
+ufw allow 443/tcp
+ufw allow 80/tcp
